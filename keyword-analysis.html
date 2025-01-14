@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Analysis Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .form-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .response-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center form-title">Keyword Analysis Tool Test</h1>
+        <form id="keywordForm">
+            <div class="mb-3">
+                <label for="companyName" class="form-label">Company Name</label>
+                <input type="text" class="form-control" id="companyName" placeholder="Enter the company name" required>
+            </div>
+            <div class="mb-3">
+                <label for="industry" class="form-label">Industry</label>
+                <input type="text" class="form-control" id="industry" placeholder="Enter the industry" required>
+            </div>
+            <div class="mb-3">
+                <label for="keywords" class="form-label">Keywords (One per line)</label>
+                <textarea class="form-control" id="keywords" rows="6" placeholder="Enter one keyword per line" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Analyze Keywords</button>
+        </form>
+        <div id="responseMessage" class="response-container"></div>
+        <pre id="hiddenJson" class="hidden"></pre>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>.then(data => {
+    // Debugging: Log the raw response
+    console.log("Raw JSON Response:", data);
+
+    // Clear the response message container
+    const responseMessage = document.getElementById('responseMessage');
+    responseMessage.innerHTML = '';
+
+    // Validate processed_keywords structure
+    const processedKeywords = data.processed_keywords;
+    if (!processedKeywords || typeof processedKeywords !== 'object') {
+        responseMessage.innerHTML = '<p>Error: Invalid data format received from the server.</p>';
+        console.error('Invalid data structure:', data);
+        return;
+    }
+
+    // Build a user-friendly output
+    let output = '<h3>Keyword Analysis Results</h3>';
+    output += '<ul>';
+    for (const [keyword, analysis] of Object.entries(processedKeywords)) {
+        output += `<li><strong>Keyword:</strong> ${keyword}<br>`;
+        output += `<strong>Primary Keyword:</strong> ${analysis.primary_keyword}<br>`;
+        output += `<strong>Secondary Keywords:</strong>`;
+        output += `<ul>${analysis.secondary_keywords.map(k => `<li>${k}</li>`).join('')}</ul>`;
+        output += `<strong>Long-Tail Keywords:</strong>`;
+        output += `<ul>${analysis.long_tail_keywords.map(k => `<li>${k}</li>`).join('')}</ul>`;
+        output += `</li>`;
+    }
+    output += '</ul>';
+
+    // Display the clean output
+    responseMessage.innerHTML = output;
+
+    // Debugging: Log the response container content
+    console.log("Updated Response Message:", responseMessage.innerHTML);
+
+    // Optional: Update the hidden JSON element for debugging (comment out if needed)
+    // document.getElementById('hiddenJson').textContent = JSON.stringify(data, null, 2);
+})
+.catch(error => {
+    console.error('Error:', error);
+    document.getElementById('responseMessage').innerText = 'An error occurred. Please try again.';
+});
+
+    </script>
+</body>
+</html>
