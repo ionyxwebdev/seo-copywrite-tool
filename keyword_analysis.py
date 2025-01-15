@@ -1,10 +1,16 @@
-from flask import Flask, request, jsonify, render_template, make_response
+from flask import Flask, request, jsonify, render_template
+from flask_basicauth import BasicAuth
 import requests
 import os
 from keyword_selector import select_keywords
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Basic Authentication Configuration
+app.config['BASIC_AUTH_USERNAME'] = 'ionyxdigital'
+app.config['BASIC_AUTH_PASSWORD'] = '2349!dhjudHD'
+basic_auth = BasicAuth(app)
 
 # SEMrush API details
 SEMRUSH_API_KEY = os.getenv("SEMRUSH_API_KEY")  # No fallback, should be set in Heroku Config Vars
@@ -58,6 +64,7 @@ def add_header(response):
     return response
 
 @app.route('/')
+@basic_auth.required  # Protect this route with Basic Auth
 def home():
     """
     Render the HTML form for keyword analysis.
@@ -65,6 +72,7 @@ def home():
     return render_template('keyword-analysis.html')
 
 @app.route('/analyze', methods=['POST'])
+@basic_auth.required  # Protect this route with Basic Auth
 def analyze_keywords():
     """
     Handle keyword analysis requests, fetch SEMrush data, and process with OpenAI.
