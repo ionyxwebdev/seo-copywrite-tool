@@ -1,22 +1,21 @@
 from flask import Flask, request, jsonify, render_template, make_response
 import requests
-from dotenv import load_dotenv
 import os
 from keyword_selector import select_keywords
-
-# Load environment variables from .env file
-load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
 
 # SEMrush API details
-SEMRUSH_API_KEY = os.getenv("SEMRUSH_API_KEY", "fc579f03b53da48c2aee1bd73d7010b0")  # Fallback to default key if .env is missing
+SEMRUSH_API_KEY = os.getenv("SEMRUSH_API_KEY")  # No fallback, should be set in Heroku Config Vars
 
 def get_seo_keywords(keyword):
     """
     Fetches related keyword suggestions from SEMrush for a given keyword.
     """
+    if not SEMRUSH_API_KEY:
+        raise ValueError("SEMRUSH_API_KEY is not set. Please configure it in Heroku Config Vars.")
+
     params = {
         'type': 'phrase_related',
         'key': SEMRUSH_API_KEY,
