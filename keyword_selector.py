@@ -1,8 +1,9 @@
-from openai import OpenAI
+import openai
+import os
 import json
 
-# Initialize the OpenAI client
-client = OpenAI(api_key="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")
+# Load the OpenAI API key from environment variables
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 PROMPT_TEMPLATE = """
 You are an SEO assistant for the {industry} industry. Select one primary keyword, two secondary keywords, 
@@ -13,7 +14,7 @@ and four long-tail keywords from the given data based on these criteria:
 - Not brand related or company name
 - Commercial Intent, where user is looking to purchase a service or product
 - Not a course or related to education
-- Be sensitive to potentially innapropriate themes
+- Be sensitive to potentially inappropriate themes
 
 Data:
 {keywords}
@@ -33,7 +34,7 @@ def select_keywords(keywords, industry="general"):
 
     try:
         # Call OpenAI's chat completion endpoint
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are a helpful SEO assistant."},
@@ -41,7 +42,7 @@ def select_keywords(keywords, industry="general"):
             ]
         )
         # Extract and parse the JSON response
-        result = response.choices[0].message.content.strip()
+        result = response.choices[0].message["content"].strip()
         return json.loads(result)  # Convert the output string to JSON
     except Exception as e:
         print(f"Error: {e}")
