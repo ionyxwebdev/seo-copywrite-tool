@@ -35,7 +35,7 @@ def select_keywords(keywords, industry="general"):
     try:
         # Call OpenAI's chat completion endpoint
         response = openai.ChatCompletion.create(
-            model="chatgpt-4o",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a helpful SEO assistant."},
                 {"role": "user", "content": prompt}
