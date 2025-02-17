@@ -31,9 +31,13 @@ def get_seo_keywords(keyword):
     }
 
     response = requests.get('https://api.semrush.com/', params=params)
+    
     if response.status_code == 200:
         try:
             data = response.text.splitlines()
+            if len(data) < 2:  # If only headers exist, no keywords were found
+                return None
+
             headers = data[0].split(';')  # Extract headers from the first line
             keywords = [
                 {
@@ -97,20 +101,28 @@ def analyze_keywords():
 
             suggestions = get_seo_keywords(keyword)
 
+            if suggestions is None:
+                all_processed_keywords[keyword] = {"error": "No related keywords found for this term."}
+                continue
+
             if suggestions:
-                # Pass the industry to the select_keywords function
-                processed_keywords = select_keywords(suggestions, industry=industry)
-                if processed_keywords:
-                    # Ensure processed_keywords retains structured format
-                    all_processed_keywords[keyword] = {
-                        "primary_keyword": processed_keywords.get('primary_keyword'),
-                        "secondary_keywords": processed_keywords.get('secondary_keywords', []),
-                        "long_tail_keywords": processed_keywords.get('long_tail_keywords', [])
-                    }
-                else:
-                    all_processed_keywords[keyword] = {"error": "Unable to process keyword suggestions"}
+                try:
+                    # Pass the industry to the select_keywords function
+                    processed_keywords = select_keywords(suggestions, industry=industry)
+
+                    if processed_keywords:
+                        all_processed_keywords[keyword] = {
+                            "primary_keyword": processed_keywords.get('primary_keyword'),
+                            "secondary_keywords": processed_keywords.get('secondary_keywords', []),
+                            "long_tail_keywords": processed_keywords.get('long_tail_keywords', [])
+                        }
+                    else:
+                        all_processed_keywords[keyword] = {"error": "Keyword analysis could not be performed."}
+                except Exception as e:
+                    print(f"Error processing keyword '{keyword}': {e}")
+                    all_processed_keywords[keyword] = {"error": f"Processing error: {str(e)}"}
             else:
-                all_processed_keywords[keyword] = {"error": "No suggestions found for this keyword"}
+                all_processed_keywords[keyword] = {"error": "No keyword data retrieved from SEMrush."}
 
         # Prepare the response
         response = {
@@ -123,7 +135,7 @@ def analyze_keywords():
 
     except Exception as e:
         print(f"Unexpected error: {e}")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "An unexpected error occurred. Please try again."}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
