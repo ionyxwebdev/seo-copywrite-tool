@@ -8,7 +8,6 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 PROMPT_TEMPLATE = """
 You are an SEO assistant for the {industry} industry. Select one primary keyword, two secondary keywords, 
 and four long-tail keywords from the given data based on these criteria:
-- Primary: The keyword inputted.
 - Secondary: Moderate search volume with slightly lower CPC and competition.
 - Long-Tail: Lower search volume but specific to the niche and with low competition.
 - Not brand related or company name
