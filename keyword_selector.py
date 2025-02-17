@@ -15,6 +15,7 @@ and four long-tail keywords from the given data based on these criteria:
 - Not a course or related to education
 - Be sensitive to potentially inappropriate themes
 - Must logically be related to the company and the service it provides. This is important.
+- Do not include keywords containing: "near me"
 
 Data:
 {keywords}
