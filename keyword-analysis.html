@@ -65,7 +65,7 @@
     output += '<ul>';
     for (const [keyword, analysis] of Object.entries(processedKeywords)) {
         output += `<li><strong>Keyword:</strong> ${keyword}<br>`;
-        output += `<strong>Primary Keyword:</strong> ${analysis.primary_keyword}<br>`;
+        output += `<strong>Primary Keyword:</strong> ${keyword}br>`;
         output += `<strong>Secondary Keywords:</strong>`;
         output += `<ul>${analysis.secondary_keywords.map(k => `<li>${k}</li>`).join('')}</ul>`;
         output += `<strong>Long-Tail Keywords:</strong>`;
