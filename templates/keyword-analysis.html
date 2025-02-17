@@ -77,7 +77,7 @@
                 let output = '<h3>Keyword Analysis Results</h3>';
                 for (const [keyword, analysis] of Object.entries(processedKeywords)) {
                     output += `<p><strong>Keyword:</strong> ${keyword}</p>`;
-                    output += `<p><strong>Primary Keyword:</strong> ${analysis.primary_keyword}</p>`;
+                    output += `<p><strong>Primary Keyword:</strong> ${keyword}</p>`;
                     output += `<p><strong>Secondary Keywords:</strong> ${analysis.secondary_keywords.join(', ')}</p>`;
                     output += `<p><strong>Long-Tail Keywords:</strong> ${analysis.long_tail_keywords.join(', ')}</p>`;
                     output += `<hr>`;
