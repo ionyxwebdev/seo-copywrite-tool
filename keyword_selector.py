@@ -6,23 +6,23 @@ import json
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 PROMPT_TEMPLATE = """
-You are a SEO Keyword master. You have to choose 2 secondary and 4 long-tail keywords with the following guide.
-Keyword Selection Guidelines for {Industry}
+SEO Keyword Selection Guide for {Industry}
+
+Choose 2 secondary and 4 long-tail keywords based on these rules:
+
 Secondary Keywords (2)
-Moderate search volume: Not too high (to avoid extreme competition) but still substantial enough to attract traffic.
-Lower CPC & competition: Compared to high-volume keywords, ensuring a balance between visibility and cost-efficiency.
-Commercial intent: Indicates users are actively looking to purchase a service or product.
-Industry relevance: Must logically align with the company's services/products and customer search behavior.
-Excludes brand/company names: No keywords tied to specific businesses or competitors.
-Not education-related: Avoids keywords about courses, certifications, or training.
-Avoids inappropriate themes: Must be suitable for all audiences and free from misleading, controversial, or sensitive topics.
+Moderate search volume (not overly competitive).
+Lower CPC & competition for cost-effectiveness.
+Strong commercial intent (purchase-driven).
+Industry-relevant (aligned with services/products).
+No brand names, competitors, or educational terms.
+Must be appropriate and suitable for all audiences.
 Long-Tail Keywords (4)
-Lower search volume: But highly specific to the niche, capturing targeted intent.
-Low competition: Easier to rank for while still maintaining commercial value.
-Commercial intent: Indicates the user is closer to making a purchase or booking a service.
-Industry-specific: Must be directly relevant to the business and its offerings.
-Excludes "near me": To maintain broader, location-agnostic reach.
-No brand names or competitors: Keeps focus on generic but high-intent search queries.
+Lower search volume but highly niche-specific.
+Low competition with strong commercial intent.
+Directly related to the business’s offerings.
+No “near me,” brand names, or competitors.
+Ensure all keywords match the business’s industry and service intent.
 
 Data:
 {keywords}
